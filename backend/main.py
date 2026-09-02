@@ -10,6 +10,11 @@ enrollment form and the newsletter signup. Data is stored in a local
 SQLite file (erihans.db), created automatically on first run.
 """
 
+# Dependencies are installed by the backend environment at runtime. Keep
+# editor diagnostics from reporting them as unresolved when that environment
+# is not selected locally.
+# pyright: reportMissingImports=false
+
 import os
 import secrets
 from datetime import datetime
