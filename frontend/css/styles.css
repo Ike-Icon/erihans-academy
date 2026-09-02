@@ -216,7 +216,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .hero-photo {
   aspect-ratio: 4 / 5;
   border-radius: var(--radius);
-  background: url("/frontend/assets/finance.png");
+  background: url("frontend/assets/finance.png");
   /* background:
     linear-gradient(155deg, rgba(10,27,51,0.55), rgba(10,27,51,0.15)),
     linear-gradient(200deg, var(--navy-700), var(--navy-900)); */
@@ -364,11 +364,11 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   background: var(--navy-700);
 }
 
-.approach-img--education { background: url("/frontend/assets/finance.png") center/cover no-repeat, linear-gradient(150deg, #2E5C3C, #16321F); }
-.approach-img--money      { background: url("/frontend/assets/money.png") center/cover no-repeat, linear-gradient(150deg, #E9C9C9, #C98484); }
-.approach-img--invest     { background: url("/frontend/assets/invest.jpg") center/cover no-repeat, linear-gradient(150deg, #1B3560, #0A1B33); }
-.approach-img--business   { background: url("/frontend/assets/business.jpg") center/cover no-repeat, linear-gradient(150deg, #EDE2C5, #C9A227); }
-.approach-img--wellness   { background: url("/frontend/assets/wellness.jpg") center/cover no-repeat, linear-gradient(150deg, #DDE7DD, #8FAE95); }
+.approach-img--education { background: url("frontend/assets/finance.png") center/cover no-repeat, linear-gradient(150deg, #2E5C3C, #16321F); }
+.approach-img--money      { background: url("frontend/assets/money.png") center/cover no-repeat, linear-gradient(150deg, #E9C9C9, #C98484); }
+.approach-img--invest     { background: url("frontend/assets/invest.jpg") center/cover no-repeat, linear-gradient(150deg, #1B3560, #0A1B33); }
+.approach-img--business   { background: url("frontend/assets/business.jpg") center/cover no-repeat, linear-gradient(150deg, #EDE2C5, #C9A227); }
+.approach-img--wellness   { background: url("frontend/assets/wellness.jpg") center/cover no-repeat, linear-gradient(150deg, #DDE7DD, #8FAE95); }
 
 
 /* .approach-card p { font-size: 0.88rem; margin: 0; } */
