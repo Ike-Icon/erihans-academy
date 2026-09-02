@@ -1,24 +1,33 @@
-# Erihans Wealth & Wellness Academy — website
+# Erihans Wealth & Wellness Academy
 
-A landing page and mission/vision page for the academy, plus a FastAPI
-backend for the enrollment form and newsletter signup. The backend also
-serves the frontend files, so the whole site is one app, one deploy,
-one URL.
+The official website: a landing page, a mission & vision page, and a FastAPI
+backend that captures enrollment inquiries and newsletter signups. One app,
+one deploy, one URL — the backend serves the frontend itself, so there's no
+separate hosting to juggle.
 
 ```
-erihans-website/
-  frontend/
-    index.html
-    mission-vision.html
-    styles.css
-    script.js
-  backend/
-    main.py
-    requirements.txt
-  render.yaml
+Learn · Earn · Save · Invest · Live Well
 ```
 
-## Run it locally
+---
+
+## What's in here
+
+| Piece                            | What it does                                                          |
+| -------------------------------- | --------------------------------------------------------------------- |
+| `frontend/index.html`          | The homepage — hero, five programs, gallery, values, enrollment form |
+| `frontend/mission-vision.html` | Vision, mission and commitment statement                              |
+| `frontend/styles.css`          | The full navy-and-gold design system, one file                        |
+| `frontend/script.js`           | Mobile nav toggle + form submissions to the API                       |
+| `backend/main.py`              | FastAPI app: serves the frontend and handles form data                |
+| `backend/requirements.txt`     | Python dependencies                                                   |
+| `render.yaml`                  | One-click deploy blueprint for Render                                 |
+
+---
+
+## Quick start (2 minutes)
+
+You need Python 3.10+ installed. That's the only prerequisite.
 
 ```bash
 cd backend
@@ -28,90 +37,89 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
-Open `http://127.0.0.1:8000` — that's the whole site, frontend and API
-together. It creates `erihans.db` (SQLite) on first run, no separate
-database setup needed for local development.
+Open **http://127.0.0.1:8000** — that's the whole site, frontend and API
+together, running from one process. A SQLite file (`erihans.db`) is created
+automatically on first run, so there's nothing else to set up.
 
-Endpoints:
-- `GET  /api/health` — health check
-- `GET  /api/programs` — the five program listings
-- `POST /api/enroll` — enrollment / callback request form
-- `POST /api/newsletter` — newsletter signup
-- `GET  /api/admin/enrollments` — lists submitted enrollments (add auth before using this outside local dev)
+Try the interactive API docs at **http://127.0.0.1:8000/docs** — you can
+fire test requests at every endpoint straight from the browser.
 
-Interactive API docs: `http://127.0.0.1:8000/docs`
+---
 
-## Deploy to Render (recommended)
+## How it fits together
 
-Render will host the API, serve the frontend, and give you a free
-managed Postgres database, so your leads survive redeploys.
+The backend does double duty. `main.py` defines the `/api/*` routes first,
+then mounts the `frontend/` folder to serve everything else:
 
-1. **Push this folder to a GitHub repo.** Render deploys from a repo,
-   not a local folder.
-2. **Go to [render.com](https://render.com) → New → Blueprint.**
-   Point it at your repo. Render reads `render.yaml` at the repo root
-   and sets up both the web service and the database automatically —
-   you shouldn't need to fill in build/start commands by hand.
-3. **Click Apply.** First deploy takes a few minutes. Render installs
-   `backend/requirements.txt`, starts Uvicorn, and wires the
-   `DATABASE_URL` environment variable to the new Postgres database
-   for you.
-4. **Open the URL Render gives you** (something like
-   `https://erihans-academy.onrender.com`). That's your live site —
-   frontend and API both, same domain.
-5. **Submit a test enrollment** through the live form, then check it
-   landed in the database: visit `/api/admin/enrollments` on your live
-   URL. Once you confirm this endpoint works, restrict it (see below)
-   so it isn't public.
+```python
+FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
+app.mount("/", StaticFiles(directory=str(FRONTEND_DIR), html=True), name="frontend")
+```
 
-**Free tier note:** the free web service sleeps after 15 minutes of no
-traffic and takes a few seconds to wake on the next visit. That's fine
-for a course-enrollment site with steady but not constant traffic. If
-that wake-up delay bothers you, Render's paid tier ($7/month) keeps it
-always on. The free Postgres database doesn't sleep, but Render does
-delete unused free databases after 90 days of inactivity, so if the
-site goes quiet for that long, revisit it.
+That mount has to stay **last** in the file. Routes are matched top to
+bottom, and this one matches almost anything, so anything registered after
+it would never be reached.
 
-**Custom domain:** once deployed, Render → your service → Settings →
-Custom Domains lets you point `erihansacademy.com` at it with a CNAME
-record. Render issues the SSL certificate automatically.
+Because of this, file paths matter. If `styles.css` lives at
+`frontend/styles.css` on disk, the browser fetches it from `/styles.css` —
+**not** `/frontend/styles.css`. The `frontend/` folder becomes your site
+root once it's mounted; don't reference it by name inside your own HTML.
+(See **Troubleshooting** below — this is the single most common way people
+get a working site locally and a blank, unstyled page after deploying.)
 
-### Railway, as an alternative
+### API endpoints
 
-Same idea, different dashboard: New Project → Deploy from GitHub →
-Railway auto-detects the FastAPI app. Add a Postgres plugin from their
-marketplace, and it sets `DATABASE_URL` for you the same way Render
-does. Slightly less generous free tier, but the workflow is nearly
-identical.
+| Method   | Path                       | Purpose                                                              |
+| -------- | -------------------------- | -------------------------------------------------------------------- |
+| `GET`  | `/api/health`            | Health check                                                         |
+| `GET`  | `/api/programs`          | The five program listings, as JSON                                   |
+| `POST` | `/api/enroll`            | Enrollment / callback request form                                   |
+| `POST` | `/api/newsletter`        | Newsletter signup                                                    |
+| `GET`  | `/api/admin/enrollments` | Every submitted enrollment —**password protected**, see below |
 
-## If you'd rather split frontend and backend across two hosts
+---
 
-You don't need this for a site this size, but if you later hand the
-frontend to a separate team or a no-code page builder:
+## Deploy it (Render, ~10 minutes)
 
-- Deploy `backend/` to Render or Railway as above.
-- Deploy `frontend/` to Netlify or Vercel (drag-and-drop the folder,
-  or connect the repo).
-- In `frontend/script.js`, set `API_BASE` to your backend's real URL,
-  e.g. `"https://erihans-api.onrender.com"`.
-- In `backend/main.py`, replace the wildcard in `allow_origins` with
-  your actual Netlify/Vercel domain.
+Render hosts the app, serves the frontend, and gives you a free managed
+Postgres database, so enrollment data survives redeploys instead of living
+in a SQLite file that resets.
 
-## Before going to production
+1. **Push this repo to GitHub.** Render deploys from a repo, not a local
+   folder — commit everything, including `frontend/`.
+2. Go to **[render.com](https://render.com) → New → Blueprint** and point it
+   at your repo. Render reads `render.yaml` and provisions the web service
+   *and* the database together — no manual build/start command entry.
+3. Click **Apply**. First deploy takes a few minutes.
+4. Open the URL Render gives you (something like
+   `https://erihans-academy.onrender.com`). That's your live site.
+5. Submit a test enrollment through the live form, then confirm it saved —
+   see **Checking submissions** below.
 
-- **Set a real admin password.** `/api/admin/enrollments` is now
-  protected with a username and password (the browser will prompt for
-  them — no extra frontend page needed). Locally it defaults to
-  `admin` / `change-me-before-deploying` so it still works out of the
-  box, but on Render, `render.yaml` generates a random password for
-  you automatically as the `ADMIN_PASSWORD` environment variable — go
-  to your service → Environment in the Render dashboard to see it (or
-  set your own). Change `ADMIN_USERNAME` there too if you don't want
-  it to stay as `admin`.
-- Add real photography to `frontend/styles.css` in place of the
-  gradient placeholders (`.hero-photo`, `.approach-img--*`).
-- Wire up an email service (e.g. SES, Postmark) so enrollment and
-  newsletter submissions trigger a confirmation email.
-- If you split frontend/backend (above), tighten `allow_origins` in
-  `main.py` to your real domain instead of the wildcard `*`.
+**Free tier note:** the web service sleeps after 15 minutes idle and takes
+a few seconds to wake on the next visit. Fine for steady-but-not-constant
+traffic; upgrade to the $7/month tier if that wake delay is a problem. The
+free Postgres database stays awake but gets deleted after 90 days of
+total inactivity — worth remembering if the site goes quiet for a season.
 
+**Custom domain:** Render → your service → Settings → Custom Domains. Point
+a CNAME at it; Render issues the SSL certificate automatically, no extra
+steps.
+
+---
+
+## Checking submissions
+
+Enrollment inquiries land in the database, viewable at:
+
+```
+https://erihans-academy.onrender.com/index.html#enroll
+```
+
+This is protected with a username and password — your browser will prompt
+for them. Locally, the defaults are `admin` / `change-me-before-deploying`.
+On Render, `render.yaml` generates a strong random password for you
+automatically; find it under your service's **Environment** tab as
+`ADMIN_PASSWORD`. Change either value there whenever you like.
+
+---
