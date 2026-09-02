@@ -11,15 +11,18 @@ SQLite file (erihans.db), created automatically on first run.
 """
 
 import os
+import secrets
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
-from fastapi import FastAPI  # type: ignore[import-not-found]
-from fastapi.middleware.cors import CORSMiddleware  # type: ignore[import-not-found]
-from fastapi.staticfiles import StaticFiles  # type: ignore[import-not-found]
-from pydantic import BaseModel, EmailStr, Field  # type: ignore[import-not-found]
-from sqlmodel import Field as SQLField  # type: ignore[import-not-found]
-from sqlmodel import Session, SQLModel, create_engine, select  # type: ignore[import-not-found]
+
+from fastapi import Depends, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel, EmailStr, Field
+from sqlmodel import Field as SQLField
+from sqlmodel import Session, SQLModel, create_engine, select
 
 # ---------------------------------------------------------------------------
 # Database setup
@@ -37,6 +40,34 @@ DATABASE_URL = raw_url
 
 connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
 engine = create_engine(DATABASE_URL, connect_args=connect_args)
+
+
+# ---------------------------------------------------------------------------
+# Admin authentication
+# ---------------------------------------------------------------------------
+# Protects /api/admin/* routes with a username + password prompt (HTTP Basic
+# Auth — the browser shows a native login popup, no extra frontend needed).
+# Set these as environment variables before deploying. Locally, sensible
+# defaults are used so `/api/admin/enrollments` still works out of the box —
+# but change them (or set real env vars) before this goes anywhere public.
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "adm1npass")
+
+security = HTTPBasic()
+
+
+def require_admin(credentials: HTTPBasicCredentials = Depends(security)) -> str:
+    # secrets.compare_digest avoids leaking timing information about how
+    # many characters matched, which a plain "==" comparison would do.
+    correct_username = secrets.compare_digest(credentials.username, ADMIN_USERNAME)
+    correct_password = secrets.compare_digest(credentials.password, ADMIN_PASSWORD)
+    if not (correct_username and correct_password):
+        raise HTTPException(
+            status_code=401,
+            detail="Incorrect username or password.",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+    return credentials.username
 
 
 class EnrollmentInquiry(SQLModel, table=True):
@@ -202,9 +233,9 @@ def subscribe_newsletter(payload: NewsletterRequest) -> dict:
 
 
 @app.get("/api/admin/enrollments", response_model=list[EnrollmentInquiry])
-def list_enrollments() -> list[EnrollmentInquiry]:
-    """Basic listing endpoint for admissions staff.
-    Add authentication before using this outside local development."""
+def list_enrollments(_: str = Depends(require_admin)) -> list[EnrollmentInquiry]:
+    """Enrollment inquiries, for admissions staff only.
+    Protected with HTTP Basic Auth — see ADMIN_USERNAME / ADMIN_PASSWORD above."""
     with Session(engine) as session:
         return session.exec(select(EnrollmentInquiry)).all()
 

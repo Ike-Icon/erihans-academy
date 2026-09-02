@@ -99,8 +99,15 @@ frontend to a separate team or a no-code page builder:
 
 ## Before going to production
 
-- Add authentication to `/api/admin/enrollments` — right now anyone
-  with the URL can read every submitted name, email and phone number.
+- **Set a real admin password.** `/api/admin/enrollments` is now
+  protected with a username and password (the browser will prompt for
+  them — no extra frontend page needed). Locally it defaults to
+  `admin` / `change-me-before-deploying` so it still works out of the
+  box, but on Render, `render.yaml` generates a random password for
+  you automatically as the `ADMIN_PASSWORD` environment variable — go
+  to your service → Environment in the Render dashboard to see it (or
+  set your own). Change `ADMIN_USERNAME` there too if you don't want
+  it to stay as `admin`.
 - Add real photography to `frontend/styles.css` in place of the
   gradient placeholders (`.hero-photo`, `.approach-img--*`).
 - Wire up an email service (e.g. SES, Postmark) so enrollment and
