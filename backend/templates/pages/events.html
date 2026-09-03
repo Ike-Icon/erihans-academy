@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Events — Erihans Wealth & Wellness Academy{% endblock %}
+{% block description %}Upcoming workshops, info sessions and community events from Erihans Wealth & Wellness Academy.{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">Events</p>
+    <h1>Workshops &amp; info sessions</h1>
+    <p class="lede">Free info sessions, one-off workshops and community events, separate from the paid programs.</p>
+  </div>
+</section>
+
+<section class="events-section">
+  <div class="wrap">
+    {# <p class="page-note">
+      <strong>Placeholder content.</strong> The two cards below are examples showing the layout. Replace the bracketed text with real events in
+      <code>backend/templates/pages/events.html</code>, and copy the whole <code>&lt;article class="event-card"&gt;</code> block to add more.
+    </p> #}
+
+    <div class="event-grid">
+
+      <article class="event-card">
+        <div class="event-card-date">
+          <span class="day">15</span>
+          <span class="month">SEP</span>
+        </div>
+        <div class="event-card-body">
+          <span class="placeholder-badge">Coming soon...</span>
+          <h3>Cohort 4 Info Session</h3>
+          <p>[Short description of what happens at this event and who it's for.]</p>
+          <div class="event-meta">
+            <span>6:00 AM</span>
+            <span>Online</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="event-card">
+        <div class="event-card-date">
+          <span class="day">22</span>
+          <span class="month">SEP</span>
+        </div>
+        <div class="event-card-body">
+          <span class="placeholder-badge">Coming soon...</span>
+          <h3>Budgeting Workshop</h3>
+          <p>[Short description of what happens at this event and who it's for.]</p>
+          <div class="event-meta">
+            <span>12:00 PM</span>
+            <span>Online</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

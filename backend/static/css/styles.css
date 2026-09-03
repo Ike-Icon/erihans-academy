@@ -369,6 +369,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .approach-img--invest     { background: url("../assets/invest.jpg") center/cover no-repeat, linear-gradient(150deg, #1B3560, #0A1B33); }
 .approach-img--business   { background: url("../assets/business.jpg") center/cover no-repeat, linear-gradient(150deg, #EDE2C5, #C9A227); }
 .approach-img--wellness   { background: url("../assets/wellness.jpg") center/cover no-repeat, linear-gradient(150deg, #DDE7DD, #8FAE95); }
+.approach-img--wealth  { background: url("../assets/wealth.jpg") center/cover no-repeat, linear-gradient(150deg, #EDE2C5, #C9A227); } 
 
 
 /* .approach-card p { font-size: 0.88rem; margin: 0; } */
@@ -687,3 +688,336 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto !important; transition: none !important; }
 }
+
+/* ---------------------------------------------------
+   Nav: active state + Programs dropdown
+--------------------------------------------------- */
+.main-nav a.is-active { color: var(--navy-900); border-color: var(--gold-500); }
+
+.nav-dropdown { position: relative; }
+.nav-dropdown-trigger { display: inline-flex; align-items: center; gap: 5px; }
+.nav-dropdown-trigger svg { transition: transform 0.15s ease; }
+.nav-dropdown.is-active > .nav-dropdown-trigger { color: var(--navy-900); border-color: var(--gold-500); }
+
+.nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 14px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px;
+  min-width: 230px;
+  box-shadow: 0 16px 36px rgba(10, 27, 51, 0.14);
+  z-index: 50;
+}
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown:focus-within .nav-dropdown-menu {
+  display: block;
+}
+.nav-dropdown:hover .nav-dropdown-trigger svg { transform: rotate(180deg); }
+
+.nav-dropdown-menu a {
+  display: block;
+  padding: 9px 12px;
+  border-radius: 5px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--ink-600);
+  border-bottom: none;
+}
+.nav-dropdown-menu a:hover { background: var(--cream-100); color: var(--navy-900); }
+
+@media (max-width: 720px) {
+  .nav-dropdown-menu {
+    display: block;
+    position: static;
+    margin: 4px 0 4px 14px;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+  }
+  .nav-dropdown-trigger svg { display: none; }
+  .nav-dropdown-menu a { padding: 8px 0; border-bottom: 1px solid var(--line); }
+}
+
+/* ---------------------------------------------------
+   Generic interior page header (About, Programs, Courses, Events, Contact, Register)
+--------------------------------------------------- */
+.page-hero {
+  padding: 72px 0 56px;
+  border-bottom: 1px solid var(--line);
+}
+.page-hero h1 { max-width: 20ch; }
+.page-hero .lede { margin-top: 4px; font-size: 1.08rem; max-width: 52ch; color: var(--ink-600); }
+
+/* ---------------------------------------------------
+   Program detail pages
+--------------------------------------------------- */
+.program-detail { padding: 72px 0 96px; }
+.program-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 56px;
+  align-items: start;
+}
+.program-detail-body p { font-size: 1.03rem; }
+
+.program-learn-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 28px 0 40px;
+}
+.program-learn-list li {
+  padding-left: 28px;
+  position: relative;
+  font-size: 0.98rem;
+  color: var(--ink-600);
+}
+.program-learn-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 14px;
+  height: 1px;
+  background: var(--gold-500);
+}
+
+.program-sidebar {
+  background: var(--cream-100);
+  border-radius: 10px;
+  padding: 28px;
+  position: sticky;
+  top: 100px;
+}
+.program-sidebar h4 { margin-bottom: 16px; }
+.program-sidebar ul { display: flex; flex-direction: column; gap: 11px; margin-bottom: 26px; }
+.program-sidebar li {
+  font-size: 0.9rem;
+  color: var(--ink-600);
+  padding-left: 22px;
+  position: relative;
+}
+.program-sidebar li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--gold-500);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.program-crumb {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--gold-500);
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 980px) {
+  .program-detail-grid { grid-template-columns: 1fr; }
+  .program-sidebar { position: static; }
+}
+
+/* ---------------------------------------------------
+   Placeholder badge (Courses / Events)
+--------------------------------------------------- */
+.placeholder-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #A6431F;
+  background: #FCEEE4;
+  border: 1px solid #F3D3BC;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.page-note {
+  background: var(--cream-100);
+  border: 1px dashed rgba(10, 27, 51, 0.25);
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-size: 0.9rem;
+  color: var(--ink-600);
+  margin-bottom: 44px;
+  max-width: none;
+}
+.page-note strong { color: var(--navy-900); }
+
+/* ---------------------------------------------------
+   Courses page
+--------------------------------------------------- */
+.courses-section { padding: 0 0 96px; }
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.course-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.course-card h3 { margin: 8px 0 2px; font-size: 1.2rem; }
+.course-card p { font-size: 0.92rem; margin-bottom: 6px; }
+.course-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 6px;
+}
+.course-meta span {
+  font-size: 0.76rem;
+  font-weight: 600;
+  background: var(--cream-100);
+  color: var(--navy-800);
+  padding: 5px 11px;
+  border-radius: 20px;
+}
+.course-card .btn { align-self: flex-start; margin-top: 10px; }
+
+@media (max-width: 980px) { .course-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 720px) { .course-grid { grid-template-columns: 1fr; } }
+
+/* ---------------------------------------------------
+   Events page
+--------------------------------------------------- */
+.events-section { padding: 0 0 96px; }
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.event-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  gap: 0;
+}
+.event-card-date {
+  background: var(--navy-900);
+  color: var(--cream-50);
+  padding: 20px;
+  min-width: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--font-display);
+}
+.event-card-date .day { font-size: 1.6rem; font-weight: 600; line-height: 1; }
+.event-card-date .month { font-size: 0.78rem; color: var(--gold-300); margin-top: 4px; letter-spacing: 0.05em; }
+.event-card-body { padding: 20px 22px; flex: 1; }
+.event-card-body h3 { font-size: 1.1rem; margin-bottom: 6px; }
+.event-card-body p { font-size: 0.9rem; margin-bottom: 8px; }
+.event-meta { font-size: 0.82rem; color: var(--ink-600); display: flex; gap: 14px; flex-wrap: wrap; }
+
+@media (max-width: 720px) {
+  .event-grid { grid-template-columns: 1fr; }
+  .event-card { flex-direction: column; }
+  .event-card-date { flex-direction: row; gap: 8px; min-width: auto; padding: 12px 20px; }
+}
+
+/* ---------------------------------------------------
+   Contact page
+--------------------------------------------------- */
+.contact-section { padding: 72px 0 96px; }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 56px;
+  align-items: start;
+}
+.contact-info-list { display: flex; flex-direction: column; gap: 22px; margin-top: 28px; }
+.contact-info-item { display: flex; gap: 14px; align-items: flex-start; }
+.contact-info-item svg { flex-shrink: 0; margin-top: 3px; }
+.contact-info-item strong { display: block; color: var(--navy-900); font-size: 0.95rem; margin-bottom: 2px; }
+.contact-info-item span, .contact-info-item a { font-size: 0.9rem; color: var(--ink-600); }
+
+.contact-form {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 32px;
+  box-shadow: 0 10px 30px rgba(10, 27, 51, 0.05);
+}
+
+@media (max-width: 980px) { .contact-grid { grid-template-columns: 1fr; } }
+
+/* ---------------------------------------------------
+   Student Registration page — fee summary table
+--------------------------------------------------- */
+.register-fees {
+  margin: 26px 0 6px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(250, 246, 236, 0.15);
+}
+.register-fees table { width: 100%; border-collapse: collapse; }
+.register-fees th, .register-fees td {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.84rem;
+  color: var(--cream-100);
+  border-bottom: 1px solid rgba(250, 246, 236, 0.1);
+}
+.register-fees th { color: var(--gold-300); font-weight: 600; }
+.register-fees tr:last-child td { border-bottom: none; }
+
+/* Sixth approach card (Wealth Creation) + 3-column gallery layout */
+.approach-img--wealth { background: url("../assets/wealth.jpg") center/cover no-repeat, linear-gradient(150deg, #C9A227, #7A6013); }
+.approach-icon--wealth { background: var(--navy-800); }
+
+.approach-grid { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 980px) { .approach-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 720px) { .approach-grid { grid-template-columns: 1fr; } }
+
+/* ---------------------------------------------------
+   Home page program teaser links (program-row becomes a link)
+--------------------------------------------------- */
+.program-row-link { display: block; }
+.program-row-link:hover .program-body h3 { color: var(--navy-700); }
+.program-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--gold-500);
+}
+
+/* ---------------------------------------------------
+   CTA banner (centered variant of the enroll section)
+--------------------------------------------------- */
+.cta-banner { text-align: center; max-width: 620px; }
+.cta-banner .eyebrow { justify-content: center; }
+.cta-banner h2, .cta-banner p { color: var(--cream-50); }
+.cta-banner p { margin: 0 auto 28px; color: rgba(250, 246, 236, 0.75); }
+.cta-banner-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+/* "Explore next" links inside the program sidebar shouldn't get the checkmark bullet */
+.program-sidebar-plain li { padding-left: 0; }
+.program-sidebar-plain li::before { content: none; }
+.program-sidebar-plain a { color: var(--navy-900); font-weight: 600; font-size: 0.9rem; }
+.program-sidebar-plain a:hover { color: var(--gold-500); }
+
+
+

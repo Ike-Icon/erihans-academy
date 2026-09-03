@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Student Registration — Erihans Wealth & Wellness Academy{% endblock %}
+{% block description %}Register for a program at Erihans Wealth & Wellness Academy.{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">Student registration</p>
+    <h1>Tell us where you're starting from</h1>
+    <p class="lede">Fill this in and a program advisor will call you within two working days to recommend the right track and payment plan.</p>
+  </div>
+</section>
+
+<section class="enroll">
+  <div class="wrap enroll-inner">
+    <div class="enroll-copy">
+      <p class="eyebrow eyebrow--light">Cohort 4 · starts 15 September</p>
+      <h2>What to expect</h2>
+      <ul class="enroll-points">
+        <li>Weekend and weekday evening classes</li>
+        <li>Payment plans available, no interest</li>
+        <li>Small cohorts, capped at 30 people</li>
+      </ul>
+
+      {# <div class="register-fees">
+        <table>
+          <thead>
+            <tr><th>Program</th><th>Fee</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Financial education</td><td>[GHS ___]</td></tr>
+            <tr><td>Money management</td><td>[GHS ___]</td></tr>
+            <tr><td>Investment education</td><td>[GHS ___]</td></tr>
+            <tr><td>Entrepreneurship</td><td>[GHS ___]</td></tr>
+            <tr><td>Wealth creation</td><td>[GHS ___]</td></tr>
+            <tr><td>Wellness</td><td>[GHS ___]</td></tr>
+          </tbody>
+        </table>
+      </div> #}
+      {# <p style="font-size: 0.82rem; color: rgba(250,246,236,0.55); margin-top: -8px;">Placeholder fees — update this table in <code>backend/templates/pages/register.html</code> once pricing is finalized.</p> #}
+    </div>
+
+    <form class="enroll-form" id="enroll-form" novalidate>
+      <div class="form-row">
+        <label for="name">Full name</label>
+        <input type="text" id="name" name="name" required autocomplete="name">
+      </div>
+      <div class="form-row">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required autocomplete="email">
+      </div>
+      <div class="form-row">
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" name="phone" autocomplete="tel">
+      </div>
+      <div class="form-row">
+        <label for="program">Which program interests you most?</label>
+        <select id="program" name="program">
+          <option value="financial_education">Financial education</option>
+          <option value="money_management">Money management</option>
+          <option value="investment_education">Investment education</option>
+          <option value="entrepreneurship">Entrepreneurship</option>
+          <option value="wealth_creation">Wealth creation</option>
+          <option value="wellness">Wellness</option>
+          <option value="not_sure">Not sure yet</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="message">Anything we should know?</label>
+        <textarea id="message" name="message" rows="3"></textarea>
+      </div>
+      <button type="submit" class="btn btn-gold btn-block" id="enroll-submit">Request a call back</button>
+      <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+{% endblock %}
